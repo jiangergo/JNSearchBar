@@ -11,7 +11,7 @@
 
 static NSString *reuseID = @"cell";
 
-@interface JNHomeTableViewController ()
+@interface JNHomeTableViewController ()<UISearchResultsUpdating>
 
 @property (nonatomic, strong) NSMutableArray *dataArray;
 
@@ -37,8 +37,10 @@ static NSString *reuseID = @"cell";
     
     _searchVc = [[UISearchController alloc]initWithSearchResultsController:_resultVc];
     _searchVc.searchBar.frame = CGRectMake(0, 0, self.view.frame.size.width, 44);
+    
     self.tableView.tableHeaderView = self.searchVc.searchBar;
     
+    self.searchVc.searchResultsUpdater = self;
     
     
 }
@@ -69,6 +71,18 @@ static NSString *reuseID = @"cell";
     return cell;
 }
 
+
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController{
+    
+    // 谓词
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[c]%@",self.searchVc.searchBar.text];
+    
+    // 过滤
+    NSArray *resultArray = [NSMutableArray arrayWithArray:[_dataArray filteredArrayUsingPredicate:predicate]];
+    
+    self.resultVc.searchList = resultArray;
+    
+}
 
 /*
 // Override to support conditional editing of the table view.

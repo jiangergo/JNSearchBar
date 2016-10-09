@@ -10,4 +10,6 @@
 
 @interface JNResultTableViewController : UITableViewController
 
+@property (nonatomic, strong) NSArray *searchList;
+
 @end
